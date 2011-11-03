@@ -1,8 +1,24 @@
 require 'rubygems'
 require 'spork'
 require 'ohm'
+require 'mock_redis'
 require 'bookstore/book'
 require 'bookstore/author'
+
+# I'm leveraging MockRedis so the tests don't require a running Redis server to be running.
+# MockRedis is a _nearly_ complete Redis implementation.  Unfortunately, one of the pieces
+# not implemented is the Redis.connect method.  To over come this, I've extended MockRedis
+# and supplied a connect method.  Any future methods that aren't implemented can be added
+# here as well.
+class ConnectableMockRedis < MockRedis
+  def self.connect(attrs = {})
+    MockRedis.new
+  end
+end
+
+# In order to trick Ohm to use MockRedis, I need to have the Redis class point to my mock
+# implementation instead.
+Redis = ConnectableMockRedis
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 

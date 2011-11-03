@@ -9,8 +9,10 @@ describe Book do
     }
   end
   
-  it "should pass validation given valid attributes" do
-    Book.new(@attributes).valid?.should be_true
+  it "should pass validation given valid attributes and save itself" do
+    book = Book.new(@attributes)
+    book.valid?.should be_true
+    book.save.should be_true
   end
   
   it "should require a title" do

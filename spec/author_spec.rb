@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Author do
+  
   before(:each) do
     @attributes = {
       :last_name => "Hunt",
@@ -8,8 +9,10 @@ describe Author do
     }
   end
   
-  it "should pass validation given valid attributes" do
-    Author.new(@attributes).valid?.should be_true
+  it "should pass validation given valid attributes and save itself" do
+    author = Author.new(@attributes)
+    author.valid?.should be_true
+    author.save.should be_true
   end
   
   it "should require a last name" do
